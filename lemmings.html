@@ -22,8 +22,8 @@ body {
 
 <body>
 <section id="imageLoader" class="hidden">
-  <img class="hidden" src="images/lemming.png" alt="lemming">
-  <img class="hidden" src="images/level.png" alt="level">
+  <img class="hidden" src="images/lemming.png" alt="lemming" data-name="lemming">
+  <img class="hidden" src="images/level.png" alt="level" data-name="level">
 </section>
 
 <main>
@@ -147,22 +147,22 @@ HEIGHT = 800;
 WIDTH = 800;
 
 // level information
-level_image = 'level';
-BACKGROUND_COLOUR = [114, 114, 201, 255];
+const LEVEL_IMAGE = 'level';
+const BACKGROUND_COLOUR = [114, 114, 201, 255];
 
 // store the colour of each pixel in the level image
 var pixels;
 
 // a list to keep track of the lemmings
 var lemmings;
-max_lemmings = 10;
-start_position = [100, 100];
+const MAX_LEMMINGS = 10;
+const START_POSITION = [100, 100];
 // a timer and interval for creating new lemmings
 var timer;
-interval = 10;
+const INTERVAL = 10;
 
 function reset() {
-  screen.blit(level_image, [0, 0]);
+  screen.blit(LEVEL_IMAGE, [0, 0]);
   pixels = screen.getSurface();
   lemmings = [];
   timer = 0;
@@ -171,10 +171,9 @@ function reset() {
 // returns 'True' if the pixel specified is 'ground'
 // (i.e. anything except BACKGROUND_COLOUR)
 function groundatposition(pos) {
-  let [x=0, y=0] = pos;
   // ensure position contains integer values
-  x = Math.trunc(x);
-  y = Math.trunc(y);
+  let x = Math.trunc(pos[0]),
+      y = Math.trunc(pos[1]);
   // get the colour from the 'pixels' list
   return (!Surface.isColorEqual(pixels.getAt(x, y), BACKGROUND_COLOUR));
 }
@@ -183,7 +182,7 @@ class Lemming extends Actor {
   constructor() {
     super('lemming');
     this.anchor = ['left', 'top'];
-    this.pos = start_position;
+    this.pos = START_POSITION;
     this.direction = 1;
     this.climbheight = 4;
   }
@@ -234,7 +233,7 @@ function update() {
   // increment the timer and create a new
   // lemming if the interval has passed
   timer += 0.1;
-  if ((timer > interval) && (lemmings.length < max_lemmings)) {
+  if ((timer > INTERVAL) && (lemmings.length < MAX_LEMMINGS)) {
     timer = 0;
     lemmings.push(new Lemming());
   }
@@ -247,7 +246,7 @@ function update() {
 function draw() {
   screen.clear();
   // draw the level
-  screen.blit(level_image, [0, 0]);
+  screen.blit(LEVEL_IMAGE, [0, 0]);
   // draw lemmings
   for (let i of lemmings) {
     i.draw();
