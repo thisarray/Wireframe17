@@ -164,8 +164,7 @@ var timer;
 const INTERVAL = 10;
 
 function reset() {
-  screen.blit(LEVEL_IMAGE, [0, 0]);
-  pixels = screen.getSurface();
+  pixels = Surface.fromImage(LEVEL_IMAGE);
   lemmings = [];
   timer = 0;
 }
